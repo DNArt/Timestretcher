@@ -10,18 +10,19 @@ function Timestretcher(options) {
   this.display_width = options.display_width || 640;
   this.display_height = options.display_height || 480;
 
-  this.upwards = options.upwards || true;
-  this.mirrored = options.mirrored || true;
+  this.upwards = options.upwards;
+  this.mirrored = options.mirrored;
   
   this.delay = 1000/(options.frame_rate || 30);
   
   this.tdt = 0;
 
   this.element = {};
-  this.localStream = {};
   this.localVideo = {};
   this.ctx = {};
   this.timer = {};
+  
+  this.allowFullscreen = options.allow_fullscreen;
 
   // Time Stretcher Vars
   var segmentSize = options.segment_size || 4;
@@ -75,10 +76,6 @@ Timestretcher.prototype.onUserMediaSuccess = function(stream) {
     this.localVideo.src = stream;
   }
   
-  this.localStream = stream;
-  
-  console.log(stream);
-  
   this.nextFrame();
 }
     
@@ -99,8 +96,20 @@ Timestretcher.prototype.$ = function(name) {
 Timestretcher.prototype.init = function() {
   
   this.element = this.$(this.parent);
-  this.element.innerHTML += "<canvas width='"+this.capture_width+"' height='"+this.capture_height+"' style='display:block;border:0;background:#000; width:"+this.display_width+"px; height:"+this.display_height+"px;' id='"+this.canvas_id+"'></canvas>";
-  this.element.innerHTML += "<video width='"+this.capture_width+"' height='"+this.capture_height+"' id='_timestretcher_live' style='display:none;visibility:hidden;' autoplay></video>";
+  this.element.innerHTML +=
+    "<canvas id='"+this.canvas_id+
+        "' width='"+this.capture_width+
+        "' height='"+this.capture_height+
+        "' style='display:block;border:0;background:#000;' </canvas>";
+  this.element.innerHTML +=
+    "<video id='_timestretcher_live'"+ 
+        "  width='"+this.capture_width+
+        "' height='"+this.capture_height+
+        "' style='display:none;visibility:hidden;'"+
+        "  autoplay></video>";
+  
+  this.element.innerHTML += "<style>canvas#"+this.canvas_id+" { width:"+this.display_width+"px; height:"+this.display_height+"px; } "+
+    "canvas#"+this.canvas_id+":-webkit-full-screen { width:100%; height:100%; }</style>"
   
   this.localVideo = this.$("#_timestretcher_live");
   this.canvas = this.$("#"+this.canvas_id);
@@ -123,8 +132,30 @@ Timestretcher.prototype.init = function() {
     }
   }
   
+  if (this.allowFullscreen) {
+    document.addEventListener("keydown", function(e) {
+      if (e.keyCode == 70) {
+        this.toggleFullScreen();
+      }
+    }.bind(this), false);
+  }
 }
 
+Timestretcher.prototype.toggleFullScreen = function() {
+  if (!document.mozFullScreen && !document.webkitFullScreen) {
+    if (this.canvas.mozRequestFullScreen) {
+      this.canvas.mozRequestFullScreen();
+    } else {
+      this.canvas.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+    }
+  } else {
+    if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen();
+    } else {
+      document.webkitCancelFullScreen();
+    }
+  }
+}
   
 Timestretcher.prototype.setDirection = function(u) {
   this.upwards = u;

@@ -22,17 +22,18 @@ Create a new ```Timestretcher``` object, and call the ```init()``` function when
 The Timestretcher constructor takes an options object and honours the following attrubutes, default values as specified:  
     
     var options = {
-      parent:         'body',   // Parent element used 
-      canvas_id:      'canvas', // ID of the actual video
-      capture_width:  320,      // Resolution of the capture...
-      capture_height: 240,      //   (decrease for better performance)
-      display_width:  640,      // The output will be stretched to
-      display_height: 480,      //   this size
-      frame_rate:     30,       // Desired frame rate
-      segment_size:   4,        // The number of lines took together
-                                //   less is slower but nicer
-      upwards:        true,     // Direction of the time
-      mirrored:       true      // Mirror output image?
+      parent:           'body',   // Parent element used 
+      canvas_id:        'canvas', // ID of the actual video
+      capture_width:    320,      // Resolution of the capture...
+      capture_height:   240,      //   (decrease for better performance)
+      display_width:    640,      // The output will be stretched to
+      display_height:   480,      //   this size
+      frame_rate:       30,       // Desired frame rate
+      segment_size:     4,        // The number of lines took together
+                                  //   less is slower but nicer
+      upwards:          true,     // Direction of the time
+      mirrored:         true      // Mirror output image?
+      allow_fullscreen: true      // Go fullscreen when F-key is pressed
     }
 
 The ```Timestretcher``` object further supports the following functions to change settings on the fly:
