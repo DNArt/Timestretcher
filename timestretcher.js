@@ -41,19 +41,11 @@ function Timestretcher(options) {
   }
 }
 
-Timestretcher.prototype.startStretcher = function() {
-  this.timer = setInterval(this.nextFrame.bind(this), this.delay);
-}
-
 Timestretcher.prototype.nextFrame = function() {
   this.ctx.drawImage(this.localVideo, 0, 0, this.capture_width, this.capture_height);
   this.imageData = this.ctx.getImageData(0, 0, this.capture_width, this.capture_height);
   var pixels = this.imageData.data;
-  /*
-  for (var p = 0; p < numPixels; p++) {
-    for (var rgb = 0; rgb < 3; rgb++)
-      pixels[p*4+rgb] = pixels[p*4+(3-rgb)];
-  }*/
+  
   for (var row = 0; row < this.capture_height; row++) {
     var rowlen = this.imageBuffer[row].length;
     var nextCounter = (this.counter[row]+1) % this.imageBuffer[row].length;
@@ -72,50 +64,51 @@ Timestretcher.prototype.nextFrame = function() {
     this.counter[row] = nextCounter;
   }
   this.ctx.putImageData(this.imageData, 0, 0);
+  this.timer = setTimeout(this.nextFrame.bind(this), this.delay);
 }
 
 // User Media Stuff...
 Timestretcher.prototype.onUserMediaSuccess = function(stream) {
-  console.log(this);
   // TODO: Different browsers.
   this.localVideo.src = window.webkitURL.createObjectURL(stream);
   this.localStream = stream;
-  this.startStretcher();
 }
     
 Timestretcher.prototype.onUserMediaError = function(error){
   console.log("Couldn't get user media: "+error);
 }
 
+Timestretcher.prototype.$ = function(name) {
+  if (name[0] === '#') {
+    return document.getElementById(name.substring(1));
+  } else if (name[0] === '.') {
+    return document.getElementsByClassName(name.substring(1))[0];
+  } else {
+    return document.getElementsByTagName(name)[0];
+  }
+}
+
 Timestretcher.prototype.init = function() {
-  this.element = $(this.parent);
   
-  this.element.append("<canvas width='"+this.capture_width+"' height='"+this.capture_height+"' style='display:block;border:0;background:#000; width:"+this.display_width+"px; height:"+this.display_height+"px;' id='"+this.canvas_id+"'></canvas>");
-  this.element.append("<video width='"+this.capture_width+"' height='"+this.capture_height+"' id='_timestretcher_live' style='display:none;visibility:hidden;' autoplay></video>");
+  this.element = this.$(this.parent);
+  this.element.innerHTML += "<canvas width='"+this.capture_width+"' height='"+this.capture_height+"' style='display:block;border:0;background:#000; width:"+this.display_width+"px; height:"+this.display_height+"px;' id='"+this.canvas_id+"'></canvas>";
+  this.element.innerHTML += "<video width='"+this.capture_width+"' height='"+this.capture_height+"' id='_timestretcher_live' style='display:none;visibility:hidden;' autoplay></video>";
   
-  this.localVideo = $("video#_timestretcher_live").get()[0];
-  
-  this.canvas = $("canvas#"+this.canvas_id);
-  
-  this.ctx = this.canvas.get()[0].getContext('2d');
+  this.localVideo = this.$("#_timestretcher_live");
+  this.canvas = this.$("#"+this.canvas_id);
+  this.ctx = this.canvas.getContext('2d');
   try {
     navigator.webkitGetUserMedia({audio:true, video:true}, this.onUserMediaSuccess.bind(this), this.onUserMediaError.bind(this));
   } catch (e) {
     try {
-    navigator.webkitGetUserMedia("video,audio", this.onUserMediaSuccess.bind(this), this.onUserMediaError.bind(this));
+      navigator.webkitGetUserMedia("video,audio", this.onUserMediaSuccess.bind(this), this.onUserMediaError.bind(this));
     } catch (e) {
       alert("webkitGetUserMedia() failed. Is the MediaStream flag enabled in about:flags?");
       console.log("webkitGetUserMedia failed with exception: " + e.message);
     }
   }
 
-  /*
-  this.localVideo.addEventListener('timeupdate', function(e) {
-    console.log(this.localVideo.playbackRate);
-    //var t = (new Date()).getTime();
-    //console.log(t-tdt);
-    //tdt = t;
-  }.bind(this));*/
+  this.nextFrame();
   
 }
 
@@ -127,4 +120,7 @@ Timestretcher.prototype.setDirection = function(u) {
 Timestretcher.prototype.setMirrored = function(m) {
   this.mirrored = m;
 }
-  
+
+Timestretcher.prototype.setFramerate = function(f) {
+  this.delay = 1000/f;
+}

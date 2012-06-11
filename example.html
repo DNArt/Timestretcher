@@ -2,8 +2,7 @@
 <html lang="en">  
   <head>  
     <meta charset="utf-8">  
-    <title>Timestretcher.js</title>
-    <script src="./lib/jquery-1.7.2.min.js"></script>   
+    <title>Timestretcher.js</title> 
     <script src="./timestretcher.js"></script>
     <script>
       var timestretcher = new Timestretcher({
@@ -19,9 +18,9 @@
         mirrored:       true
       });
       
-      $(document).ready(function() {
+      window.onload = function() {
         timestretcher.init();
-      });
+      };
     </script>
   </head>  
   <body>

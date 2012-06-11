@@ -3,9 +3,10 @@
 This is an HTML5 implementation of the [Timestretcher](http://dnart.meteor.com/dnart/dnart_timestretcher/) installation made by Bill Spinhoven van Oosten in 1987. It currently works only/best in [Google Chrome](http://chrome.google.com).
 
 ## Usage ##
+**Important** -- Note that the ```webkitURL.createObjectURL()``` API used to access the user's webcam only works if the document is loaded from ```http://``` locations, not from ```file://``` locations (as when documents are opened it from your hard disk). Hence, for this to work, host it somewhere as a website ("online" or using a webserver).
 
-Include timestretcher.js into your document:  
-
+You can also see ```example.html``` for a working example. Include timestretcher.js into your document:  
+    
     <script src="path/to/timestretcher.js"></script>
 
 Create a new ```Timestretcher``` object, and call the ```init()``` function when the document is ready:  
@@ -19,23 +20,26 @@ Create a new ```Timestretcher``` object, and call the ```init()``` function when
     </script>
 
 The Timestretcher constructor takes an options object and honours the following attrubutes, default values as specified:  
-
+    
     var options = {
-	  parent:         'body',   // Parent element used 
+      parent:         'body',   // Parent element used 
       canvas_id:      'canvas', // ID of the actual video
       capture_width:  320,      // Resolution of the capture...
       capture_height: 240,      //   (decrease for better performance)
       display_width:  640,      // The output will be stretched to
       display_height: 480,      //   this size
       frame_rate:     30,       // Desired frame rate
-	  segment_size:   4,        // The number of lines took together combined
+      segment_size:   4,        // The number of lines took together
+                                //   less is slower but nicer
       upwards:        true,     // Direction of the time
       mirrored:       true      // Mirror output image?
     }
 
-See example.html for a working example.
+The ```Timestretcher``` object further supports the following functions to change settings on the fly:
 
-**Important** -- Note that the ```webkitURL.createObjectURL()``` API used to access the user's webcam only works if the document is loaded from ```http://``` locations, not from ```file://``` locations (as when documents are opened it from your hard disk). Hence, for this to work, host it somewhere as a website ("online" or using a webserver).
+    timestretcher.setDirection(bool); // If parameter is true, go upwards, else downwards
+    timestretcher.setMirrored(bool);
+    timestretcher.setFramerate(frameRate);
 
 ## License ##
 This work is released under the MIT license.
