@@ -1,0 +1,29 @@
+<!DOCTYPE html>  
+<html lang="en">  
+  <head>  
+    <meta charset="utf-8">  
+    <title>Timestretcher.js</title>
+    <script src="./lib/jquery-1.7.2.min.js"></script>   
+    <script src="./timestretcher.js"></script>
+    <script>
+      var timestretcher = new Timestretcher({
+        parent:         'body',
+        canvas_id:      'canvas',
+        capture_width:  320,
+        capture_height: 240,
+        display_width:  640,
+        display_height: 480,
+        frame_rate:     30,
+        segment_size:   4,
+        upwards:        true,
+        mirrored:       true
+      });
+      
+      $(document).ready(function() {
+        timestretcher.init();
+      });
+    </script>
+  </head>  
+  <body>
+  </body>
+</html>  
