@@ -69,9 +69,17 @@ Timestretcher.prototype.nextFrame = function() {
 
 // User Media Stuff...
 Timestretcher.prototype.onUserMediaSuccess = function(stream) {
-  // TODO: Different browsers.
-  this.localVideo.src = window.webkitURL.createObjectURL(stream);
+  if (window.webkitURL) {
+    this.localVideo.src = window.webkitURL.createObjectURL(stream);
+  } else {
+    this.localVideo.src = stream;
+  }
+  
   this.localStream = stream;
+  
+  console.log(stream);
+  
+  this.nextFrame();
 }
     
 Timestretcher.prototype.onUserMediaError = function(error){
@@ -97,18 +105,23 @@ Timestretcher.prototype.init = function() {
   this.localVideo = this.$("#_timestretcher_live");
   this.canvas = this.$("#"+this.canvas_id);
   this.ctx = this.canvas.getContext('2d');
-  try {
-    navigator.webkitGetUserMedia({audio:true, video:true}, this.onUserMediaSuccess.bind(this), this.onUserMediaError.bind(this));
-  } catch (e) {
+  if (navigator.webkitGetUserMedia) {
     try {
-      navigator.webkitGetUserMedia("video,audio", this.onUserMediaSuccess.bind(this), this.onUserMediaError.bind(this));
+      navigator.webkitGetUserMedia({audio:false, video:true}, this.onUserMediaSuccess.bind(this), this.onUserMediaError.bind(this));
     } catch (e) {
-      alert("webkitGetUserMedia() failed. Is the MediaStream flag enabled in about:flags?");
-      console.log("webkitGetUserMedia failed with exception: " + e.message);
+      try {
+        navigator.webkitGetUserMedia("video", this.onUserMediaSuccess.bind(this), this.onUserMediaError.bind(this));
+      } catch (e) {
+        alert("wekitGetUserMedia() failed. Is the MediaStream flag enabled in about:flags? Exception: " + e.message);
+      }
+    }
+  } else if (navigator.getUserMedia) {
+    try {
+      navigator.getUserMedia({audio:false, video:true}, this.onUserMediaSuccess.bind(this), this.onUserMediaError.bind(this));
+    } catch (e) {
+      console.log("getUserMedia failed. Exception: " + e.message);
     }
   }
-
-  this.nextFrame();
   
 }
 
