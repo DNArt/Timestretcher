@@ -8,7 +8,7 @@ Include timestretcher.js into your document:
 
     <script src="path/to/timestretcher.js"></script>
 
-Create a new Timestretcher object, and call the init() function when the document is ready:  
+Create a new ```Timestretcher``` object, and call the ```init()``` function when the document is ready:  
 
     <script>
       var timestretcher = new Timestretcher({ parent: 'body' });
