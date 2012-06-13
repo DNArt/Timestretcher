@@ -58,7 +58,7 @@ Timestretcher.prototype.nextFrame = function() {
       for (var rgb = 0;rgb < 3; rgb++) {
         // mirrored:
         if (this.mirrored) this.imageBuffer[row][this.counter[row]][(this.capture_width-(col+1))*3+rgb] = pixels[p*4+rgb];
-        else imageBuffer[row][this.counter[row]][col*3+rgb] = pixels[p*4+rgb];
+        else this.imageBuffer[row][this.counter[row]][col*3+rgb] = pixels[p*4+rgb];
         pixels[p*4+rgb] = this.imageBuffer[row][nextCounter][col*3+rgb];
       }
     }
