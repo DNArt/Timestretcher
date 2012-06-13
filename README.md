@@ -2,6 +2,10 @@
 
 This is an HTML5 implementation of the [Timestretcher](http://dnart.meteor.com/dnart/dnart_timestretcher/) installation made by Bill Spinhoven van Oosten in 1987. It currently works only/best in [Google Chrome](http://chrome.google.com).
 
+## Demo ##
+
+See [this fiddle](http://jsfiddle.net/c98pG/).
+
 ## Usage ##
 **Important** -- Note that the ```webkitURL.createObjectURL()``` API used to access the user's webcam only works if the document is loaded from ```http://``` locations, not from ```file://``` locations (as when documents are opened it from your hard disk). Hence, for this to work, host it somewhere as a website ("online" or using a webserver).
 
