@@ -36,8 +36,12 @@ The Timestretcher constructor takes an options object and honours the following 
       segment_size:     4,        // The number of lines took together
                                   //   less is slower but nicer
       upwards:          true,     // Direction of the time
-      mirrored:         true      // Mirror output image?
-      allow_fullscreen: true      // Go fullscreen when F-key is pressed
+      mirrored:         true,     // Mirror output image?
+      allow_fullscreen: true,     // Go fullscreen when F-key is pressed
+
+      skip_top:         50,           // Number of lines to skip from top
+      skip_bottom:      50,           // Number of lines to skip from bottom
+      mask:             './mask.png'  // Masking image
     }
 
 The ```Timestretcher``` object further supports the following functions to change settings on the fly:
@@ -45,6 +49,18 @@ The ```Timestretcher``` object further supports the following functions to chang
     timestretcher.setDirection(bool); // If parameter is true, go upwards, else downwards
     timestretcher.setMirrored(bool);
     timestretcher.setFramerate(frameRate);
+
+There are several keyboard shortcuts:
+    
+    T   - Go to debug/live mode
+    F   - Go to fullscreen mode
+    U   - Toggle direction of time-wave
+    M   - Toggle mirrored mode
+
+In debug mode:  
+
+    I/O - Move skip_top guide down/up
+    K/L - Move skip_bottom guide up/down
 
 ## License ##
 This work is released under the MIT license.

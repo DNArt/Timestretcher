@@ -4,16 +4,30 @@
     <meta charset="utf-8">  
     <title>Timestretcher.js</title> 
     <script src="https://raw.github.com/DNArt/Timestretcher/master/timestretcher.js"></script>
+    <!--<script src="./timestretcher.js"></script>-->
+    <style>
+      body, html {
+        background:black;
+      }
+      
+      #canvas {
+        margin:0 auto;
+        cursor:none;
+      }
+    </style>
     <script>
       var timestretcher = new Timestretcher({
         parent:         'body',
         canvas_id:      'canvas',
-        capture_width:  320,
-        capture_height: 240,
-        display_width:  640,
-        display_height: 480,
+        capture_width:  640,
+        capture_height: 120,
+        display_width:  1680,
+        display_height: 1050,
+        skip_top:       17,
+        skip_bottom:    21,
         frame_rate:     30,
-        segment_size:   4,
+        segment_size:   1,
+        mask:           './mask.png',
         upwards:        true,
         mirrored:       true,
         allow_fullscreen: true
