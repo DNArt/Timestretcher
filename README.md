@@ -1,6 +1,6 @@
 # Timestretcher #
 
-This is an HTML5 implementation of the Timestretcher installation made by Bill Spinhoven van Oosten in 1987. It currently works only/best in [Google Chrome](http://chrome.google.com).
+This is an HTML5 implementation of the Timestretcher installation made by Bill Spinhoven in 1987. It currently works only/best in [Google Chrome](http://chrome.google.com).
 
 ## Demo ##
 
